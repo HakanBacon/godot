@@ -36,6 +36,10 @@ class Decal : public VisualInstance3D {
 	GDCLASS(Decal, VisualInstance3D);
 
 public:
+    enum TextureFilterMode {
+        FILTER_LINEAR = 0,
+        FILTER_NEAREST = 1,
+    };
 	enum DecalTexture {
 		TEXTURE_ALBEDO,
 		TEXTURE_NORMAL,
@@ -45,6 +49,7 @@ public:
 	};
 
 private:
+	TextureFilterMode texture_filter = FILTER_LINEAR;
 	RID decal;
 	Vector3 size = Vector3(2, 2, 2);
 	Ref<Texture2D> textures[TEXTURE_MAX];
@@ -69,6 +74,9 @@ protected:
 
 public:
 	virtual PackedStringArray get_configuration_warnings() const override;
+
+    void set_texture_filter(TextureFilterMode p_filter);
+    TextureFilterMode get_texture_filter() const;
 
 	void set_size(const Vector3 &p_size);
 	Vector3 get_size() const;
