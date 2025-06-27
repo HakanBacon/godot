@@ -61,6 +61,18 @@ void RendererSceneRenderRD::sky_initialize(RID p_rid) {
 	sky.initialize_sky_rid(p_rid);
 }
 
+void RendererSceneRenderRD::decal_set_texture_filter(RID p_decal, RS::DecalTextureFilter p_filter) {
+    Decal *decal = decal_owner.get_or_null(p_decal);
+    ERR_FAIL_COND(!decal);
+    
+    if (decal->texture_filter == p_filter) {
+        return;
+    }
+    
+    decal->texture_filter = p_filter;
+    decal->dependency.changed_notify(Dependency::DEPENDENCY_CHANGED_MATERIAL);
+}
+
 void RendererSceneRenderRD::sky_set_radiance_size(RID p_sky, int p_radiance_size) {
 	sky.sky_set_radiance_size(p_sky, p_radiance_size);
 }
