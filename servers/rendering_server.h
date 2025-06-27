@@ -97,6 +97,10 @@ public:
 	static RenderingServer *get_singleton();
 	static RenderingServer *create();
 
+	enum DecalTextureFilter {
+    	DECAL_TEXTURE_FILTER_NEAREST,
+   		DECAL_TEXTURE_FILTER_LINEAR
+	};
 	enum {
 		NO_INDEX_ARRAY = -1,
 		ARRAY_WEIGHTS_SIZE = 4,
@@ -138,6 +142,8 @@ public:
 	virtual RID texture_3d_create(Image::Format, int p_width, int p_height, int p_depth, bool p_mipmaps, const Vector<Ref<Image>> &p_data) = 0; //all slices, then all the mipmaps, must be coherent
 	virtual RID texture_external_create(int p_width, int p_height, uint64_t p_external_buffer = 0) = 0;
 	virtual RID texture_proxy_create(RID p_base) = 0;
+
+	virtual void decal_set_texture_filter(RID p_decal, DecalTextureFilter p_filter) = 0;
 
 	virtual RID texture_create_from_native_handle(TextureType p_type, Image::Format p_format, uint64_t p_native_handle, int p_width, int p_height, int p_depth, int p_layers = 1, TextureLayeredType p_layered_type = TEXTURE_LAYERED_2D_ARRAY) = 0;
 
