@@ -340,7 +340,7 @@ public:
 	virtual bool is_dynamic_gi_supported() const;
 	virtual bool is_volumetric_supported() const;
 	virtual uint32_t get_max_elements() const;
-
+	virtual void decal_set_texture_filter(RID p_decal, RS::DecalTextureFilter p_filter) override;
 	void init();
 
 	RendererSceneRenderRD();
