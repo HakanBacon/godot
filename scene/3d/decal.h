@@ -113,3 +113,4 @@ public:
 };
 
 VARIANT_ENUM_CAST(Decal::DecalTexture);
+VARIANT_ENUM_CAST(Decal::TextureFilter);
