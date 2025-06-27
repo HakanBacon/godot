@@ -44,6 +44,12 @@ public:
 		TEXTURE_MAX
 	};
 
+public:
+    enum TextureFilter {
+        TEXTURE_FILTER_NEAREST,
+        TEXTURE_FILTER_LINEAR
+    };
+
 private:
 	RID decal;
 	Vector3 size = Vector3(2, 2, 2);
@@ -58,7 +64,7 @@ private:
 	bool distance_fade_enabled = false;
 	real_t distance_fade_begin = 40.0;
 	real_t distance_fade_length = 10.0;
-
+	TextureFilter texture_filter = TEXTURE_FILTER_LINEAR;
 protected:
 	static void _bind_methods();
 	void _validate_property(PropertyInfo &p_property) const;
@@ -69,6 +75,9 @@ protected:
 
 public:
 	virtual PackedStringArray get_configuration_warnings() const override;
+
+    void set_texture_filter(TextureFilter p_filter);
+    TextureFilter get_texture_filter() const;
 
 	void set_size(const Vector3 &p_size);
 	Vector3 get_size() const;
