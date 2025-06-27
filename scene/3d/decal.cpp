@@ -30,6 +30,18 @@
 
 #include "decal.h"
 
+void Decal::set_texture_filter(TextureFilter p_filter) {
+    if (texture_filter == p_filter) {
+        return;
+    }
+    texture_filter = p_filter;
+    RS::get_singleton()->decal_set_texture_filter(decal, (RS::DecalTextureFilter)texture_filter);
+	
+}
+Decal::TextureFilter Decal::get_texture_filter() const {
+    return texture_filter;
+}
+
 void Decal::set_size(const Vector3 &p_size) {
 	size = p_size.maxf(0.001);
 	RS::get_singleton()->decal_set_size(decal, size);
@@ -235,9 +247,14 @@ void Decal::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_cull_mask", "mask"), &Decal::set_cull_mask);
 	ClassDB::bind_method(D_METHOD("get_cull_mask"), &Decal::get_cull_mask);
-
+	
+    ClassDB::bind_method(D_METHOD("set_texture_filter", "filter"), &Decal::set_texture_filter);
+    ClassDB::bind_method(D_METHOD("get_texture_filter"), &Decal::get_texture_filter);
+	
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "size", PROPERTY_HINT_RANGE, "0,1024,0.001,or_greater,suffix:m"), "set_size", "get_size");
-
+   
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_filter", PROPERTY_HINT_ENUM, "Nearest,Linear"), "set_texture_filter", "get_texture_filter");
+    
 	ADD_GROUP("Textures", "texture_");
 	// Only allow texture types that display correctly.
 	const String texture_hint = "Texture2D,-AnimatedTexture,-AtlasTexture,-CameraTexture,-CanvasTexture,-MeshTexture,-Texture2DRD,-ViewportTexture";
@@ -271,8 +288,10 @@ void Decal::_bind_methods() {
 	BIND_ENUM_CONSTANT(TEXTURE_ORM);
 	BIND_ENUM_CONSTANT(TEXTURE_EMISSION);
 	BIND_ENUM_CONSTANT(TEXTURE_MAX);
+	BIND_ENUM_CONSTANT(TEXTURE_FILTER_NEAREST);
+    BIND_ENUM_CONSTANT(TEXTURE_FILTER_LINEAR);
 }
-
+VARIANT_ENUM_CAST(Decal::TextureFilter);
 #ifndef DISABLE_DEPRECATED
 bool Decal::_set(const StringName &p_name, const Variant &p_value) {
 	if (p_name == "extents") { // Compatibility with Godot 3.x.
