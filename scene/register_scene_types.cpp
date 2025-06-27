@@ -629,6 +629,9 @@ void register_scene_types() {
 	GDREGISTER_CLASS(SpotLight3D);
 	GDREGISTER_CLASS(ReflectionProbe);
 	GDREGISTER_CLASS(Decal);
+	// Add this line after registering Decal:
+	ClassDB::bind_enum_constant("Decal", "TEXTURE_FILTER_NEAREST", Decal::TEXTURE_FILTER_NEAREST);
+	ClassDB::bind_enum_constant("Decal", "TEXTURE_FILTER_LINEAR", Decal::TEXTURE_FILTER_LINEAR);
 	GDREGISTER_CLASS(VoxelGI);
 	GDREGISTER_CLASS(VoxelGIData);
 	GDREGISTER_CLASS(LightmapGI);
