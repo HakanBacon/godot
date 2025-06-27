@@ -62,6 +62,16 @@ void Decal::set_texture(DecalTexture p_type, const Ref<Texture2D> &p_texture) {
 	update_configuration_warnings();
 }
 
+void Decal::set_texture_filter(TextureFilterMode p_filter) {
+    if (texture_filter == p_filter) return;
+    texture_filter = p_filter;
+    //update decal somehow;
+}
+
+Decal::TextureFilterMode Decal::get_texture_filter() const {
+    return texture_filter;
+}
+
 Ref<Texture2D> Decal::get_texture(DecalTexture p_type) const {
 	ERR_FAIL_INDEX_V(p_type, TEXTURE_MAX, Ref<Texture2D>());
 	return textures[p_type];
@@ -202,6 +212,9 @@ PackedStringArray Decal::get_configuration_warnings() const {
 void Decal::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &Decal::set_size);
 	ClassDB::bind_method(D_METHOD("get_size"), &Decal::get_size);
+	
+    ClassDB::bind_method(D_METHOD("set_texture_filter", "filter"), &Decal::set_texture_filter);
+    ClassDB::bind_method(D_METHOD("get_texture_filter"), &Decal::get_texture_filter);
 
 	ClassDB::bind_method(D_METHOD("set_texture", "type", "texture"), &Decal::set_texture);
 	ClassDB::bind_method(D_METHOD("get_texture", "type"), &Decal::get_texture);
@@ -245,7 +258,9 @@ void Decal::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "texture_normal", PROPERTY_HINT_RESOURCE_TYPE, texture_hint), "set_texture", "get_texture", TEXTURE_NORMAL);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "texture_orm", PROPERTY_HINT_RESOURCE_TYPE, texture_hint), "set_texture", "get_texture", TEXTURE_ORM);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "texture_emission", PROPERTY_HINT_RESOURCE_TYPE, texture_hint), "set_texture", "get_texture", TEXTURE_EMISSION);
-
+    
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_filter", PROPERTY_HINT_ENUM, "Linear,Nearest"), "set_texture_filter", "get_texture_filter");
+	
 	ADD_GROUP("Parameters", "");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "emission_energy", PROPERTY_HINT_RANGE, "0,16,0.01,or_greater"), "set_emission_energy", "get_emission_energy");
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "modulate"), "set_modulate", "get_modulate");
@@ -271,6 +286,8 @@ void Decal::_bind_methods() {
 	BIND_ENUM_CONSTANT(TEXTURE_ORM);
 	BIND_ENUM_CONSTANT(TEXTURE_EMISSION);
 	BIND_ENUM_CONSTANT(TEXTURE_MAX);
+	BIND_ENUM_CONSTANT(FILTER_LINEAR);
+    BIND_ENUM_CONSTANT(FILTER_NEAREST);
 }
 
 #ifndef DISABLE_DEPRECATED
